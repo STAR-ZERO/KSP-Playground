@@ -1,13 +1,3 @@
 plugins {
-    kotlin("jvm") version "1.4-M1" apply false
-}
-
-buildscript {
-    dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.4-M1"))
-    }
-
-    repositories {
-        maven("https://dl.bintray.com/kotlin/kotlin-eap")
-    }
+    kotlin("jvm") version "2.0.0-Beta1" apply false
 }

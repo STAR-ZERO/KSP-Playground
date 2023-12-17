@@ -1,122 +1,109 @@
 package com.star_zero.sample.ksp
 
-import org.jetbrains.kotlin.ksp.symbol.*
-import java.io.File
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.symbol.*
 
-class SampleVisitor : KSVisitor<String, Unit> {
+class SampleVisitor(
+    private val logger: KSPLogger
+) : KSVisitor<String, Unit> {
 
     override fun visitAnnotated(annotated: KSAnnotated, data: String) {
-        Logger.print("visitAnnotated: $annotated")
+        logger.logging("[KSP] visitAnnotated")
     }
 
     override fun visitAnnotation(annotation: KSAnnotation, data: String) {
-        Logger.print("visitAnnotation: $annotation")
+        logger.logging("[KSP] visitAnnotation")
     }
 
     override fun visitCallableReference(reference: KSCallableReference, data: String) {
-        Logger.print("visitCallableReference: $reference")
+        logger.logging("[KSP] visitCallableReference")
     }
 
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: String) {
-        Logger.print("visitClassDeclaration: $classDeclaration")
+        logger.logging("[KSP] visitClassDeclaration")
     }
 
     override fun visitClassifierReference(reference: KSClassifierReference, data: String) {
-        Logger.print("visitClassifierReference: $reference")
-    }
-
-    override fun visitDeclaration(declaration: KSDeclaration, data: String) {
-        Logger.print("visitDeclaration: $declaration")
+        logger.logging("[KSP] visitClassifierReference")
     }
 
     override fun visitDeclarationContainer(declarationContainer: KSDeclarationContainer, data: String) {
-        Logger.print("visitDeclarationContainer: $declarationContainer")
+        logger.logging("[KSP] visitDeclarationContainer")
+    }
+
+    override fun visitDefNonNullReference(reference: KSDefNonNullReference, data: String) {
+        logger.logging("[KSP] visitDefNonNullReference")
     }
 
     override fun visitDynamicReference(reference: KSDynamicReference, data: String) {
-        Logger.print("visitDynamicReference: $reference")
-    }
-
-    override fun visitEnumEntryDeclaration(enumEntryDeclaration: KSEnumEntryDeclaration, data: String) {
-        Logger.print("visitEnumEntryDeclaration: $enumEntryDeclaration")
+        logger.logging("[KSP] visitDynamicReference")
     }
 
     override fun visitFile(file: KSFile, data: String) {
-        Logger.print("visitFile: $file")
-        file.declarations.forEach {
-            it.accept(this, data)
-        }
+        logger.logging("[KSP] visitFile")
     }
 
     override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: String) {
-        Logger.print("visitFunctionDeclaration: $function")
-        Logger.print("  simpleName: ${function.qualifiedName?.asString()}")
-        Logger.print("  visit: function.declarations")
-        function.declarations.forEach {
-            it.accept(this, data)
-        }
-        Logger.print("  visit: function.parameters")
-        function.parameters.forEach {
-            it.accept(this, data)
-        }
-        Logger.print("  visit: function.returnType")
-        function.returnType?.accept(this, data)
+        logger.logging("[KSP] visitFunctionDeclaration")
     }
 
     override fun visitModifierListOwner(modifierListOwner: KSModifierListOwner, data: String) {
-        Logger.print("visitModifierListOwner: $modifierListOwner")
+        logger.logging("[KSP] visitModifierListOwner")
     }
 
     override fun visitNode(node: KSNode, data: String) {
-        Logger.print("visitNode: $node")
+        logger.logging("[KSP] visitNode")
     }
 
     override fun visitParenthesizedReference(reference: KSParenthesizedReference, data: String) {
-        Logger.print("visitParenthesizedReference: $reference")
+        logger.logging("[KSP] visitParenthesizedReference")
     }
 
     override fun visitPropertyAccessor(accessor: KSPropertyAccessor, data: String) {
-        Logger.print("visitPropertyAccessor: $accessor")
+        logger.logging("[KSP] visitPropertyAccessor")
     }
 
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: String) {
-        Logger.print("visitPropertyDeclaration: $property")
+        logger.logging("[KSP] visitPropertyDeclaration")
     }
 
     override fun visitPropertyGetter(getter: KSPropertyGetter, data: String) {
-        Logger.print("visitPropertyGetter: $getter")
+        logger.logging("[KSP] visitPropertyGetter")
     }
 
     override fun visitPropertySetter(setter: KSPropertySetter, data: String) {
-        Logger.print("visitPropertySetter: $setter")
+        logger.logging("[KSP] visitPropertySetter")
     }
 
     override fun visitReferenceElement(element: KSReferenceElement, data: String) {
-        Logger.print("visitReferenceElement: $element")
+        logger.logging("[KSP] visitAnnotated")
     }
 
     override fun visitTypeAlias(typeAlias: KSTypeAlias, data: String) {
-        Logger.print("visitTypeAlias: $typeAlias")
+        logger.logging("[KSP] visitTypeAlias")
     }
 
     override fun visitTypeArgument(typeArgument: KSTypeArgument, data: String) {
-        Logger.print("visitTypeArgument: $typeArgument")
+        logger.logging("[KSP] visitTypeArgument")
     }
 
     override fun visitTypeParameter(typeParameter: KSTypeParameter, data: String) {
-        Logger.print("visitTypeParameter: $typeParameter")
+        logger.logging("[KSP] visitTypeParameter")
     }
 
     override fun visitTypeReference(typeReference: KSTypeReference, data: String) {
-        Logger.print("visitTypeReference: $typeReference")
-        Logger.print("  typeName: ${typeReference.resolve()?.declaration?.qualifiedName?.asString()}")
+        logger.logging("[KSP] visitTypeReference")
     }
 
     override fun visitValueArgument(valueArgument: KSValueArgument, data: String) {
-        Logger.print("visitValueArgument: $valueArgument")
+        logger.logging("[KSP] visitValueArgument")
     }
 
-    override fun visitVariableParameter(variableParameter: KSVariableParameter, data: String) {
-        Logger.print("visitVariableParameter: $variableParameter")
+    override fun visitValueParameter(valueParameter: KSValueParameter, data: String) {
+        logger.logging("[KSP] visitValueParameter")
+    }
+
+    override fun visitDeclaration(declaration: KSDeclaration, data: String) {
+        logger.logging("[KSP] visitDeclaration")
     }
 }

@@ -1,43 +1,48 @@
 package com.star_zero.sample.ksp
 
-import org.jetbrains.kotlin.ksp.processing.CodeGenerator
-import org.jetbrains.kotlin.ksp.processing.Resolver
-import org.jetbrains.kotlin.ksp.processing.SymbolProcessor
-import java.io.File
+import com.google.devtools.ksp.processing.*
+import com.google.devtools.ksp.symbol.KSAnnotated
 
-class SampleProcessor : SymbolProcessor {
+class SampleProcessor(
+    private val codeGenerator: CodeGenerator,
+    private val logger: KSPLogger
+) : SymbolProcessor {
 
-    private lateinit var codeGenerator: CodeGenerator
+    private var invoked = false
 
-    override fun init(options: Map<String, String>, kotlinVersion: KotlinVersion, codeGenerator: CodeGenerator) {
-        this.codeGenerator = codeGenerator
-        val logFile = codeGenerator.createNewFile("", "SampleProcessor", "log")
-        Logger.setup(logFile)
-        Logger.print("init")
-    }
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        logger.logging("[KSP] process start")
+        if (invoked) {
+            return emptyList()
+        }
 
-    override fun process(resolver: Resolver) {
-        Logger.print("process")
+        val newFile = codeGenerator.createNewFile(
+            Dependencies(false),
+            "com.star_zero.sample",
+            "Greeter"
+        )
 
-        // Create com.star_zero.sample.Greeter
-        val greeter = codeGenerator.createNewFile("com.star_zero.sample", "Greeter", "kt")
-        greeter.appendText("package com.star_zero.sample\n")
-        greeter.appendText("object Greeter {\n")
-        greeter.appendText("fun greet() {\n")
-        greeter.appendText("println(\"Hello World!\")\n")
-        greeter.appendText("}\n")
-        greeter.appendText("}\n")
+        val code = """
+            package com.star_zero.sample
+            object Greeter {
+                fun greet() {
+                    println("Hello World!")
+                }
+            }
+        """.trimIndent()
 
-        // logging source file
-        val files = resolver.getAllFiles()
-        val visitor = SampleVisitor()
+        newFile.write(code.toByteArray())
+        newFile.close()
+
+        val files = resolver.getNewFiles()
+        val visitor = SampleVisitor(logger)
         files.forEach { file ->
-            Logger.print("Start log: ${file.fileName}")
             file.accept(visitor, "")
         }
-    }
 
-    override fun finish() {
-        Logger.print("finish")
+        invoked = true
+
+        logger.logging("[KSP] process end")
+        return emptyList()
     }
 }
